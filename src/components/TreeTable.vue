@@ -53,7 +53,7 @@ const getDataPath: GetDataPath<ITreeItem> = (item) =>
     .reverse()
     .map((parent) => String(parent.id));
 
-const defaultColDef: ColDef<ITreeItem> = { suppressHeaderMenuButton: true };
+const defaultColDef: ColDef<ITreeItem> = { suppressHeaderMenuButton: true, resizable: false };
 
 const localeText = { loadingOoo: 'Загрузка...' };
 
@@ -91,7 +91,9 @@ onMounted(async () => {
 <style scoped>
 .tree-table {
   width: 100%;
-  --ag-header-column-resize-handle-height: 100%;
+}
+:deep(.ag-header-cell-resize) {
+  display: none;
 }
 :deep(.cell-group) {
   font-weight: 600;

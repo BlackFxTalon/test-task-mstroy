@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { TreeStore, type TreeItem } from '../src/store/TreeStore';
+import { TreeStore, type ITreeItem } from '../src/store/TreeStore';
 
 const N = 200_000;
 
-function generate(count: number): TreeItem[] {
-  const items: TreeItem[] = [];
+function generate(count: number): ITreeItem[] {
+  const items: ITreeItem[] = [];
   let seed = 42;
   const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
   for (let i = 0; i < count; i++) {

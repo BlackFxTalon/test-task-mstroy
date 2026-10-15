@@ -11,21 +11,21 @@ import type {
 import '../grid/setup';
 import { loadItems } from '../api/loadItems';
 import { useTreeStore } from '../composables/useTreeStore';
-import type { TreeItem } from '../store/TreeStore';
+import type { ITreeItem } from '../store/TreeStore';
 
 const { store, items, setItems } = useTreeStore();
 const loading = ref(true);
 
-const isGroup = (item: TreeItem | undefined) => item !== undefined && store.getChildren(item.id).length > 0;
-const categoryOf = (item: TreeItem | undefined) => (isGroup(item) ? 'Группа' : 'Элемент');
+const isGroup = (item: ITreeItem | undefined) => item !== undefined && store.getChildren(item.id).length > 0;
+const categoryOf = (item: ITreeItem | undefined) => (isGroup(item) ? 'Группа' : 'Элемент');
 
-const columnDefs: ColDef<TreeItem>[] = [
+const columnDefs: ColDef<ITreeItem>[] = [
   {
     colId: 'index',
     headerName: '№ п\\п',
     width: 100,
     sortable: false,
-    valueGetter: (params: ValueGetterParams<TreeItem>) => (params.node?.rowIndex ?? 0) + 1,
+    valueGetter: (params: ValueGetterParams<ITreeItem>) => (params.node?.rowIndex ?? 0) + 1,
   },
   {
     colId: 'category',
@@ -35,7 +35,7 @@ const columnDefs: ColDef<TreeItem>[] = [
     cellRenderer: 'agGroupCellRenderer',
     cellRendererParams: {
       suppressCount: true,
-      innerRenderer: (params: { data?: TreeItem }) => categoryOf(params.data),
+      innerRenderer: (params: { data?: ITreeItem }) => categoryOf(params.data),
     },
   },
   {
@@ -47,19 +47,19 @@ const columnDefs: ColDef<TreeItem>[] = [
   },
 ];
 
-const getDataPath: GetDataPath<TreeItem> = (item) =>
+const getDataPath: GetDataPath<ITreeItem> = (item) =>
   store
     .getAllParents(item.id)
     .reverse()
     .map((parent) => String(parent.id));
 
-const defaultColDef: ColDef<TreeItem> = { suppressHeaderMenuButton: true };
+const defaultColDef: ColDef<ITreeItem> = { suppressHeaderMenuButton: true };
 
 const localeText = { loadingOoo: 'Загрузка...' };
 
-const getRowId = (params: GetRowIdParams<TreeItem>) => String(params.data.id);
+const getRowId = (params: GetRowIdParams<ITreeItem>) => String(params.data.id);
 
-function onModelUpdated(event: ModelUpdatedEvent<TreeItem>) {
+function onModelUpdated(event: ModelUpdatedEvent<ITreeItem>) {
   event.api.refreshCells({ columns: ['index'], force: true });
 }
 

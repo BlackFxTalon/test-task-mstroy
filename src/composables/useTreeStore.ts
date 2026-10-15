@@ -1,11 +1,11 @@
 import { shallowRef } from 'vue';
-import { TreeStore, type TreeItem } from '../store/TreeStore';
+import { TreeStore, type ITreeItem } from '../store/TreeStore';
 
 export function useTreeStore() {
   const store = new TreeStore();
-  const items = shallowRef<TreeItem[]>(store.getAll());
+  const items = shallowRef<ITreeItem[]>(store.getAll());
 
-  const setItems = (next: TreeItem[]) => {
+  const setItems = (next: ITreeItem[]) => {
     store.setItems(next);
     items.value = store.getAll();
   };

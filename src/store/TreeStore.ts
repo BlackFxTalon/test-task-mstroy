@@ -1,12 +1,12 @@
 export type ItemId = number | string;
 
-export interface TreeItem {
+export interface ITreeItem {
   id: ItemId;
   parent: ItemId | null;
   [key: string]: unknown;
 }
 
-export class TreeStore<T extends TreeItem = TreeItem> {
+export class TreeStore<T extends ITreeItem = ITreeItem> {
   private readonly itemsById = new Map<ItemId, T>();
   private readonly childIds = new Map<ItemId, Set<ItemId>>();
   private cache: T[] | null = null;

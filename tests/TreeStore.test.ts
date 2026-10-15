@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { TreeStore, type TreeItem } from '../src/store/TreeStore';
+import { TreeStore, type ITreeItem } from '../src/store/TreeStore';
 
-const makeItems = (): TreeItem[] => [
+const makeItems = (): ITreeItem[] => [
   { id: 1, parent: null, label: 'Айтем 1' },
   { id: '91064cef', parent: 1, label: 'Айтем 2' },
   { id: 3, parent: 1, label: 'Айтем 3' },
@@ -12,7 +12,7 @@ const makeItems = (): TreeItem[] => [
   { id: 8, parent: 4, label: 'Айтем 8' },
 ];
 
-const ids = (items: TreeItem[]) => items.map((i) => i.id);
+const ids = (items: ITreeItem[]) => items.map((i) => i.id);
 
 describe('TreeStore', () => {
   let store: TreeStore;

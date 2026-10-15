@@ -17,7 +17,7 @@ export class TreeStore<T extends ITreeItem = ITreeItem> {
 
   getAll(): T[] {
     if (this.cache === null) {
-      this.cache = Array.from(this.itemsById.values());
+      this.cache = Object.freeze(Array.from(this.itemsById.values())) as T[];
     }
     return this.cache;
   }

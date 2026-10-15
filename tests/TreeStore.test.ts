@@ -161,6 +161,57 @@ describe('TreeStore', () => {
     });
   });
 
+  describe('кэш getAll', () => {
+    it('возвращает один и тот же массив до изменений', () => {
+      expect(store.getAll()).toBe(store.getAll());
+    });
+
+    it('сбрасывается после add, update, remove и setItems', () => {
+      const mutations = [
+        () => store.addItem({ id: 9, parent: null }),
+        () => store.updateItem({ id: 9, parent: 1 }),
+        () => store.removeItem(9),
+        () => store.setItems(makeItems()),
+      ];
+      for (const mutate of mutations) {
+        const before = store.getAll();
+        mutate();
+        expect(store.getAll()).not.toBe(before);
+      }
+    });
+
+    it('защищён от изменения снаружи', () => {
+      expect(() => store.getAll().push({ id: 99, parent: null })).toThrow();
+      expect(store.getAll()).toHaveLength(8);
+    });
+  });
+
+  describe('граничные случаи', () => {
+    it('setItems не изменяет входной массив', () => {
+      const input = makeItems();
+      const snapshot = structuredClone(input);
+      new TreeStore(input).addItem({ id: 9, parent: null });
+      expect(input).toEqual(snapshot);
+    });
+
+    it('удаление корня очищает всё дерево', () => {
+      store.removeItem(1);
+      expect(store.getAll()).toEqual([]);
+    });
+
+    it('элемент с несуществующим родителем считается корнем', () => {
+      store.addItem({ id: 9, parent: 'нет такого' });
+      expect(ids(store.getAllParents(9))).toEqual([9]);
+      expect(ids(store.getAllChildren(1))).not.toContain(9);
+    });
+
+    it('updateItem с тем же родителем сохраняет связи и порядок', () => {
+      store.updateItem({ id: '91064cef', parent: 1, label: 'Новый' });
+      expect(ids(store.getChildren(1))).toEqual(['91064cef', 3]);
+      expect(ids(store.getAll())).toEqual([1, '91064cef', 3, 4, 5, 6, 7, 8]);
+    });
+  });
+
   it('getAll отражает изменения', () => {
     const before = store.getAll();
     store.addItem({ id: 9, parent: null });

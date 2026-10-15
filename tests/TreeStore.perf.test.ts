@@ -27,21 +27,21 @@ function measure(name: string, fn: () => void): number {
   return ms;
 }
 
-describe(`TreeStore performance (${N} items)`, () => {
+describe(`Производительность TreeStore (${N} элементов)`, () => {
   const items = generate(N);
   const store = new TreeStore(items);
   const sampleIds = items.slice(0, 1000).map((i) => i.id);
 
-  it('builds the store quickly', () => {
+  it('быстро строит хранилище', () => {
     expect(measure('constructor', () => new TreeStore(items))).toBeLessThan(1000);
   });
 
-  it('getAll is O(1) after the first call', () => {
+  it('getAll работает за O(1) после первого вызова', () => {
     store.getAll();
     expect(measure('getAll (cached)', () => store.getAll())).toBeLessThan(5);
   });
 
-  it('getItem / getChildren stay fast', () => {
+  it('getItem и getChildren остаются быстрыми', () => {
     expect(
       measure('getItem x1000', () => sampleIds.forEach((id) => store.getItem(id))),
     ).toBeLessThan(50);
@@ -50,13 +50,13 @@ describe(`TreeStore performance (${N} items)`, () => {
     ).toBeLessThan(100);
   });
 
-  it('getAllParents x1000', () => {
+  it('getAllParents ×1000', () => {
     expect(
       measure('getAllParents x1000', () => sampleIds.forEach((id) => store.getAllParents(id))),
     ).toBeLessThan(500);
   });
 
-  it('getAllChildren of the root visits every node once', () => {
+  it('getAllChildren корня обходит каждый узел один раз', () => {
     const root = items.find((i) => i.parent === null)!;
     let size = 0;
     expect(
@@ -67,7 +67,7 @@ describe(`TreeStore performance (${N} items)`, () => {
     expect(size).toBe(N - 1);
   });
 
-  it('add / update / remove x1000', () => {
+  it('add, update и remove ×1000', () => {
     const local = new TreeStore(items);
     const root = items.find((i) => i.parent === null)!;
     expect(

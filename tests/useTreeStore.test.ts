@@ -3,11 +3,11 @@ import { nextTick, watch } from 'vue';
 import { useTreeStore } from '../src/composables/useTreeStore';
 
 describe('useTreeStore', () => {
-  it('starts empty', () => {
+  it('изначально пуст', () => {
     expect(useTreeStore().items.value).toEqual([]);
   });
 
-  it('updates items reactively after setItems', async () => {
+  it('реактивно обновляет элементы после setItems', async () => {
     const { items, store, setItems } = useTreeStore();
     let calls = 0;
     watch(items, () => calls++);

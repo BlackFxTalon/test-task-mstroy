@@ -21,11 +21,11 @@ describe('TreeStore', () => {
     store = new TreeStore(makeItems());
   });
 
-  it('getAll returns all items', () => {
+  it('getAll возвращает все элементы', () => {
     expect(store.getAll()).toEqual(makeItems());
   });
 
-  it('works with an empty store', () => {
+  it('работает с пустым хранилищем', () => {
     const empty = new TreeStore();
     expect(empty.getAll()).toEqual([]);
     expect(empty.getItem(1)).toBeUndefined();
@@ -35,68 +35,68 @@ describe('TreeStore', () => {
   });
 
   describe('getItem', () => {
-    it('returns the item by numeric and string id', () => {
+    it('возвращает элемент по числовому и строковому id', () => {
       expect(store.getItem(7)).toEqual({ id: 7, parent: 4, label: 'Айтем 7' });
       expect(store.getItem('91064cef')?.label).toBe('Айтем 2');
     });
 
-    it('returns undefined for unknown id', () => {
+    it('возвращает undefined для неизвестного id', () => {
       expect(store.getItem(100)).toBeUndefined();
     });
 
-    it('does not mix up 1 and "1"', () => {
+    it('не путает 1 и "1"', () => {
       expect(store.getItem('1')).toBeUndefined();
     });
   });
 
   describe('getChildren', () => {
-    it('returns direct children only', () => {
+    it('возвращает только прямых потомков', () => {
       expect(ids(store.getChildren(1))).toEqual(['91064cef', 3]);
       expect(ids(store.getChildren('91064cef'))).toEqual([4, 5, 6]);
     });
 
-    it('returns an empty array for a leaf and for unknown id', () => {
+    it('возвращает пустой массив для листа и неизвестного id', () => {
       expect(store.getChildren(7)).toEqual([]);
       expect(store.getChildren(100)).toEqual([]);
     });
   });
 
   describe('getAllChildren', () => {
-    it('returns all descendants', () => {
+    it('возвращает всех потомков', () => {
       expect(ids(store.getAllChildren(1)).sort()).toEqual(
         [3, 4, 5, 6, 7, 8, '91064cef'].sort(),
       );
       expect(ids(store.getAllChildren(4))).toEqual([7, 8]);
     });
 
-    it('lists direct children before deeper levels', () => {
+    it('сначала перечисляет прямых потомков, затем более глубокие уровни', () => {
       expect(ids(store.getAllChildren(1))).toEqual(['91064cef', 3, 4, 5, 6, 7, 8]);
     });
 
-    it('returns an empty array for a leaf', () => {
+    it('возвращает пустой массив для листа', () => {
       expect(store.getAllChildren(8)).toEqual([]);
     });
   });
 
   describe('getAllParents', () => {
-    it('returns the chain from the item up to the root', () => {
+    it('возвращает цепочку от элемента до корня', () => {
       expect(ids(store.getAllParents(7))).toEqual([7, 4, '91064cef', 1]);
     });
 
-    it('returns only the item for a root', () => {
+    it('для корня возвращает только сам элемент', () => {
       expect(ids(store.getAllParents(1))).toEqual([1]);
     });
 
-    it('returns an empty array for unknown id', () => {
+    it('возвращает пустой массив для неизвестного id', () => {
       expect(store.getAllParents(100)).toEqual([]);
     });
 
-    it('treats an item with a missing parent as a root', () => {
+    it('считает корнем элемент с отсутствующим родителем', () => {
       store.addItem({ id: 50, parent: 999 });
       expect(ids(store.getAllParents(50))).toEqual([50]);
     });
 
-    it('does not loop forever on a cycle', () => {
+    it('не зацикливается на циклической связи', () => {
       const cyclic = new TreeStore([
         { id: 1, parent: 2 },
         { id: 2, parent: 1 },
@@ -106,7 +106,7 @@ describe('TreeStore', () => {
   });
 
   describe('setItems', () => {
-    it('fully replaces the data', () => {
+    it('полностью заменяет данные', () => {
       store.setItems([{ id: 10, parent: null }]);
       expect(ids(store.getAll())).toEqual([10]);
       expect(store.getItem(1)).toBeUndefined();
@@ -115,20 +115,20 @@ describe('TreeStore', () => {
   });
 
   describe('addItem', () => {
-    it('adds an item and links it to its parent', () => {
+    it('добавляет элемент и связывает его с родителем', () => {
       store.addItem({ id: 9, parent: 7, label: 'Айтем 9' });
       expect(store.getAll()).toHaveLength(9);
       expect(ids(store.getChildren(7))).toEqual([9]);
       expect(ids(store.getAllParents(9))).toEqual([9, 7, 4, '91064cef', 1]);
     });
 
-    it('throws on duplicate id', () => {
+    it('выбрасывает ошибку при дублирующемся id', () => {
       expect(() => store.addItem({ id: 1, parent: null })).toThrow();
     });
   });
 
   describe('removeItem', () => {
-    it('removes the item with all descendants', () => {
+    it('удаляет элемент вместе со всеми потомками', () => {
       store.removeItem('91064cef');
       expect(ids(store.getAll())).toEqual([1, 3]);
       expect(ids(store.getChildren(1))).toEqual([3]);
@@ -136,32 +136,32 @@ describe('TreeStore', () => {
       expect(store.getChildren(4)).toEqual([]);
     });
 
-    it('does nothing for unknown id', () => {
+    it('ничего не делает для неизвестного id', () => {
       store.removeItem(100);
       expect(store.getAll()).toHaveLength(8);
     });
   });
 
   describe('updateItem', () => {
-    it('updates fields of the item', () => {
+    it('обновляет поля элемента', () => {
       store.updateItem({ id: 3, parent: 1, label: 'Новый' });
       expect(store.getItem(3)?.label).toBe('Новый');
       expect(store.getAll()).toHaveLength(8);
     });
 
-    it('moves the item when parent changes', () => {
+    it('переносит элемент при смене родителя', () => {
       store.updateItem({ id: 7, parent: 3, label: 'Айтем 7' });
       expect(ids(store.getChildren(4))).toEqual([8]);
       expect(ids(store.getChildren(3))).toEqual([7]);
       expect(ids(store.getAllParents(7))).toEqual([7, 3, 1]);
     });
 
-    it('throws for unknown id', () => {
+    it('выбрасывает ошибку для неизвестного id', () => {
       expect(() => store.updateItem({ id: 100, parent: null })).toThrow();
     });
   });
 
-  it('getAll reflects mutations', () => {
+  it('getAll отражает изменения', () => {
     const before = store.getAll();
     store.addItem({ id: 9, parent: null });
     expect(store.getAll()).not.toBe(before);

@@ -31,13 +31,13 @@ describe('TreeTable', () => {
   const mountTable = () => mount(TreeTable, { global: { stubs: { AgGridVue: AgGridStub } } });
   const grid = (wrapper: ReturnType<typeof mountTable>) => wrapper.findComponent(AgGridStub);
 
-  it('shows the loading state with no rows until data arrives', () => {
+  it('показывает состояние загрузки без строк, пока не придут данные', () => {
     const wrapper = mountTable();
     expect(grid(wrapper).props('loading')).toBe(true);
     expect(grid(wrapper).props('rowData')).toEqual([]);
   });
 
-  it('fills the table after the 2 second delay', async () => {
+  it('заполняет таблицу после задержки в 2 секунды', async () => {
     const wrapper = mountTable();
 
     await vi.advanceTimersByTimeAsync(1999);
@@ -49,7 +49,7 @@ describe('TreeTable', () => {
     expect(grid(wrapper).props('rowData')).toEqual(items);
   });
 
-  it('builds the row path from the store parents chain', async () => {
+  it('строит путь строки по цепочке родителей из хранилища', async () => {
     const wrapper = mountTable();
     await vi.advanceTimersByTimeAsync(2000);
     await flushPromises();
@@ -58,7 +58,7 @@ describe('TreeTable', () => {
     expect(getDataPath(items[2])).toEqual(['1', '2', '3']);
   });
 
-  it('defines the category column from children presence', async () => {
+  it('определяет колонку категории по наличию потомков', async () => {
     const wrapper = mountTable();
     await vi.advanceTimersByTimeAsync(2000);
     await flushPromises();

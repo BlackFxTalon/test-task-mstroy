@@ -15,7 +15,7 @@ describe('loadItems', () => {
     vi.unstubAllGlobals();
   });
 
-  it('requests the data only after the artificial delay', async () => {
+  it('запрашивает данные только после искусственной задержки', async () => {
     const promise = loadItems('/items.json', 2000);
 
     await vi.advanceTimersByTimeAsync(1999);

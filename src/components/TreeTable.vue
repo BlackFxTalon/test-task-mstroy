@@ -77,6 +77,7 @@ onMounted(async () => {
     :locale-text="localeText"
     :row-data="items"
     :loading="loading"
+    dom-layout="autoHeight"
     :tree-data="true"
     tree-data-display-type="custom"
     :group-default-expanded="-1"
@@ -90,7 +91,6 @@ onMounted(async () => {
 <style scoped>
 .tree-table {
   width: 100%;
-  height: 100%;
 }
 :deep(.cell-group) {
   font-weight: 600;

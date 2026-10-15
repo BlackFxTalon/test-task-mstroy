@@ -53,7 +53,7 @@ const getDataPath: GetDataPath<ITreeItem> = (item) =>
     .reverse()
     .map((parent) => String(parent.id));
 
-const defaultColDef: ColDef<ITreeItem> = { suppressHeaderMenuButton: true };
+const defaultColDef: ColDef<ITreeItem> = { suppressHeaderMenuButton: true, resizable: false };
 
 const localeText = { loadingOoo: 'Загрузка...' };
 

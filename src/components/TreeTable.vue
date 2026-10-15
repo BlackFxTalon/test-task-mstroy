@@ -94,6 +94,7 @@ onMounted(async () => {
 .tree-table {
   width: 100%;
   max-width: 900px;
+  --ag-row-group-indent-size: 12px;
 }
 :deep(.ag-header-cell-resize) {
   display: none;
@@ -113,5 +114,8 @@ onMounted(async () => {
 }
 :deep(.ag-root-wrapper) {
   --ag-wrapper-border: 15px solid #f3f2f1;
+}
+:deep(:where(.ag-ltr) .ag-group-expanded) {
+  margin-right: 16px;
 }
 </style>

@@ -3,7 +3,7 @@ import TreeTable from './components/TreeTable.vue';
 </script>
 
 <template>
-  <main class="page">
+  <main class="main">
     <TreeTable />
   </main>
 </template>
@@ -15,7 +15,7 @@ body,
   height: 100%;
   margin: 0;
 }
-.page {
+.main {
   box-sizing: border-box;
   height: 100%;
   padding: 24px;

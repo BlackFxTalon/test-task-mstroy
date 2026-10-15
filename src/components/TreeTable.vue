@@ -115,6 +115,9 @@ onMounted(async () => {
 :deep(.ag-root-wrapper) {
   --ag-wrapper-border: 15px solid #f3f2f1;
 }
+:deep(.ag-cell) {
+  padding-left: calc(var(--ag-cell-horizontal-padding) - 1px);
+}
 :deep(:where(.ag-ltr) .ag-cell-wrapper) {
   padding-left: 0;
 }

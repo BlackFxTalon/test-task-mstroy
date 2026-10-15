@@ -3,7 +3,6 @@ import { TreeStore, type TreeItem } from '../src/store/TreeStore';
 
 const N = 200_000;
 
-/** Random tree with shuffled ids, mixed number/string ids. */
 function generate(count: number): TreeItem[] {
   const items: TreeItem[] = [];
   let seed = 42;
@@ -13,7 +12,6 @@ function generate(count: number): TreeItem[] {
     const parent = i === 0 ? null : items[Math.floor(rnd() * i)]!.id;
     items.push({ id, parent, label: `Item ${i}` });
   }
-  // ids are unrelated to order
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(rnd() * (i + 1));
     [items[i], items[j]] = [items[j]!, items[i]!];

@@ -6,13 +6,6 @@ export interface TreeItem {
   [key: string]: unknown;
 }
 
-/**
- * In-memory tree storage.
- *
- * Items are indexed twice: by id and by parent id, so lookups, child
- * access and mutations never scan the whole item list.
- * Items whose parent is missing from the store are treated as roots.
- */
 export class TreeStore<T extends TreeItem = TreeItem> {
   private readonly itemsById = new Map<ItemId, T>();
   private readonly childIds = new Map<ItemId, Set<ItemId>>();
@@ -43,7 +36,6 @@ export class TreeStore<T extends TreeItem = TreeItem> {
     return result;
   }
 
-  /** All descendants, breadth first (direct children go first). */
   getAllChildren(id: ItemId): T[] {
     const result: T[] = [];
     const queue: ItemId[] = [id];
@@ -58,7 +50,6 @@ export class TreeStore<T extends TreeItem = TreeItem> {
     return result;
   }
 
-  /** Chain from the item itself up to the root. */
   getAllParents(id: ItemId): T[] {
     const result: T[] = [];
     const visited = new Set<ItemId>();
@@ -90,7 +81,6 @@ export class TreeStore<T extends TreeItem = TreeItem> {
     this.cache = null;
   }
 
-  /** Removes the item together with all its descendants. */
   removeItem(id: ItemId): void {
     const item = this.itemsById.get(id);
     if (item === undefined) return;
@@ -108,7 +98,6 @@ export class TreeStore<T extends TreeItem = TreeItem> {
     this.cache = null;
   }
 
-  /** Replaces the stored item that has the same id. */
   updateItem(item: T): void {
     const old = this.itemsById.get(item.id);
     if (old === undefined) {

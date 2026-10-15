@@ -5,8 +5,6 @@ import type {
   ColDef,
   GetDataPath,
   GetRowIdParams,
-  GridApi,
-  GridReadyEvent,
   ModelUpdatedEvent,
   ValueGetterParams,
 } from 'ag-grid-community';
@@ -17,7 +15,6 @@ import type { TreeItem } from '../store/TreeStore';
 
 const { store, items, setItems } = useTreeStore();
 const loading = ref(true);
-let api: GridApi<TreeItem> | null = null;
 
 const isGroup = (item: TreeItem | undefined) => item !== undefined && store.getChildren(item.id).length > 0;
 const categoryOf = (item: TreeItem | undefined) => (isGroup(item) ? 'Группа' : 'Элемент');
@@ -62,11 +59,6 @@ const localeText = { loadingOoo: 'Загрузка...' };
 
 const getRowId = (params: GetRowIdParams<TreeItem>) => String(params.data.id);
 
-function onGridReady(event: GridReadyEvent<TreeItem>) {
-  api = event.api;
-}
-
-// Row numbers depend on the current row position, so refresh them when rows are expanded or collapsed.
 function onModelUpdated(event: ModelUpdatedEvent<TreeItem>) {
   event.api.refreshCells({ columns: ['index'], force: true });
 }
@@ -75,8 +67,6 @@ onMounted(async () => {
   setItems(await loadItems());
   loading.value = false;
 });
-
-defineExpose({ store, loading, getApi: () => api });
 </script>
 
 <template>
@@ -93,7 +83,6 @@ defineExpose({ store, loading, getApi: () => api });
     :get-data-path="getDataPath"
     :get-row-id="getRowId"
     :suppress-movable-columns="true"
-    @grid-ready="onGridReady"
     @model-updated="onModelUpdated"
   />
 </template>

@@ -5,7 +5,6 @@ import TreeTable from '../src/components/TreeTable.vue';
 
 vi.mock('../src/grid/setup', () => ({}));
 
-// AgGrid needs a real layout, so it is replaced with a stub that exposes the props the table passes.
 const AgGridStub = defineComponent({
   name: 'AgGridVue',
   props: ['rowData', 'loading', 'columnDefs', 'getDataPath'],

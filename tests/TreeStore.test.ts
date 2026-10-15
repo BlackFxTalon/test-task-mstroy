@@ -162,26 +162,23 @@ describe('TreeStore', () => {
   });
 
   describe('кэш getAll', () => {
-    it('возвращает один и тот же массив до изменений', () => {
-      expect(store.getAll()).toBe(store.getAll());
+    it('возвращает одинаковое содержимое до изменений', () => {
+      expect(store.getAll()).toEqual(store.getAll());
     });
 
-    it('сбрасывается после add, update, remove и setItems', () => {
-      const mutations = [
-        () => store.addItem({ id: 9, parent: null }),
-        () => store.updateItem({ id: 9, parent: 1 }),
-        () => store.removeItem(9),
-        () => store.setItems(makeItems()),
-      ];
-      for (const mutate of mutations) {
-        const before = store.getAll();
-        mutate();
-        expect(store.getAll()).not.toBe(before);
-      }
+    it('отражает add, update, remove и setItems', () => {
+      store.addItem({ id: 9, parent: null, label: 'Старый' });
+      expect(store.getAll().at(-1)?.label).toBe('Старый');
+      store.updateItem({ id: 9, parent: null, label: 'Новый' });
+      expect(store.getAll().at(-1)?.label).toBe('Новый');
+      store.removeItem(9);
+      expect(store.getAll()).toHaveLength(8);
+      store.setItems([{ id: 10, parent: null }]);
+      expect(ids(store.getAll())).toEqual([10]);
     });
 
-    it('защищён от изменения снаружи', () => {
-      expect(() => store.getAll().push({ id: 99, parent: null })).toThrow();
+    it('изменение возвращённого массива не влияет на хранилище', () => {
+      store.getAll().push({ id: 99, parent: null });
       expect(store.getAll()).toHaveLength(8);
     });
   });

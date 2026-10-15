@@ -36,7 +36,7 @@ describe(`Производительность TreeStore (${N} элементо�
     expect(measure('constructor', () => new TreeStore(items))).toBeLessThan(1000);
   });
 
-  it('getAll работает за O(1) после первого вызова', () => {
+  it('getAll остаётся быстрым после первого вызова', () => {
     store.getAll();
     expect(measure('getAll (cached)', () => store.getAll())).toBeLessThan(5);
   });

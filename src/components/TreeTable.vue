@@ -44,6 +44,7 @@ const columnDefs: ColDef<ITreeItem>[] = [
     headerName: 'Наименование',
     field: 'label',
     flex: 1,
+    minWidth: 200,
     cellClassRules: { 'cell-group': (params) => isGroup(params.data) },
   },
 ];

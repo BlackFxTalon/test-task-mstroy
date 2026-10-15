@@ -100,8 +100,8 @@ onMounted(async () => {
 :deep(.ag-header-cell-resize) {
   display: none;
 }
-:deep(.cell-center) {
-  text-align: center;
+:deep(.ag-cell.cell-center) {
+  padding-left: 25px;
 }
 :deep(.cell-group),
 :deep(.ag-row-group) {

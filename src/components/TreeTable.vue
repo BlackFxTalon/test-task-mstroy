@@ -92,6 +92,7 @@ onMounted(async () => {
 <style scoped>
 .tree-table {
   width: 100%;
+  max-width: 900px;
 }
 :deep(.ag-header-cell-resize) {
   display: none;
@@ -102,5 +103,14 @@ onMounted(async () => {
 }
 :deep(.ag-grid-scrolling-cells) {
   --ag-header-background-color: white;
+}
+:deep(:where(.ag-ltr) .ag-header-cell:after, :where(.ag-ltr) .ag-header-group-cell:after) {
+   --ag-header-column-border: 1px solid color-mix(in srgb, transparent, var(--ag-inherited-foreground-color, #181d1f) 15%)
+}
+:deep(.ag-layout-auto-height) {
+  --ag-auto-height-min-body-height: auto;
+}
+:deep(.ag-root-wrapper) {
+  --ag-wrapper-border: 15px solid #f3f2f1;
 }
 </style>

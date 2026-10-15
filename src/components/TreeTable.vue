@@ -115,6 +115,12 @@ onMounted(async () => {
 :deep(.ag-root-wrapper) {
   --ag-wrapper-border: 15px solid #f3f2f1;
 }
+:deep(:where(.ag-ltr) .ag-cell-wrapper) {
+  padding-left: 0;
+}
+:deep(.ag-cell-wrapper .ag-group-value) {
+  margin-left: calc(var(--ag-indentation-level) * var(--ag-row-group-indent-size));
+}
 :deep(:where(.ag-ltr) .ag-group-expanded) {
   margin-right: 16px;
 }

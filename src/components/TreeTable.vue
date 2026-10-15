@@ -25,7 +25,8 @@ const columnDefs: ColDef<ITreeItem>[] = [
     headerName: '№ п\\п',
     width: 100,
     sortable: false,
-    cellClass: 'cell-group',
+    cellClass: ['cell-group', 'cell-center'],
+    headerClass: 'ag-center-header',
     valueGetter: (params: ValueGetterParams<ITreeItem>) => (params.node?.rowIndex ?? 0) + 1,
   },
   {
@@ -98,6 +99,9 @@ onMounted(async () => {
 }
 :deep(.ag-header-cell-resize) {
   display: none;
+}
+:deep(.cell-center) {
+  text-align: center;
 }
 :deep(.cell-group),
 :deep(.ag-row-group) {
